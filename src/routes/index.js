@@ -12,15 +12,19 @@ const hotelReservationService = new ApiService(
 
 const handleApiError = (res, error) => {
   console.error("Error:", error.message);
-  res.status(500).json({ error: error.message });
+  res.status(500).send({ error: error.message });
 };
+
+router.get("/", async (req, res) => {
+  res.send({ status: "ok" });
+});
 
 router.get("/hotel_info", async (req, res) => {
   const queryString = req.url.split("?")[1] || "";
   try {
     const data = await hotelInfoService.get(`?${queryString}`);
     console.log("Response:", data);
-    res.json(data);
+    res.send(data);
   } catch (error) {
     handleApiError(res, error);
   }
@@ -35,7 +39,7 @@ router.post("/hotel_reservation", async (req, res) => {
       requestBody
     );
     console.log("Response:", data);
-    res.json(data);
+    res.send(data);
   } catch (error) {
     handleApiError(res, error);
   }
